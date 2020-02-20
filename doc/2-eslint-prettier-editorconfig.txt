@@ -1,0 +1,119 @@
+01) Criando o editorconfig:
+
+    basta clicar na raíz do projeto e
+    escolher a opção
+    Generate .editorconfig
+
+02) Configurando .editorconfig:
+
+    Ele vem assim:
+
+    root = true
+
+    [*]
+    indent_style = space
+    indent_size = 2
+    charset = utf-8
+    trim_trailing_whitespace = false
+    insert_final_newline = false
+
+    --> Iremos alterar apenas as duas últimas sentenças de código para true:
+
+    --> Logo abaixo do [*] iremos acrescentar:
+        end_of_line = lf
+
+        OBS: Isso vai forçar que o final das linhas estejam no padrão UNIX e não no padrão WINDOWS.
+
+03) Instalando ESLint:
+
+    yarn add eslint -D
+
+04) Iniciando o eslint:
+
+    yarn eslint --init
+
+    OBS: por padrão, as dependencias do eslint são instaladas com o NPM.
+    Para reinstalarmos com o Yarn, basta apagar o arquivo package-lock.json.
+
+    Depois disso basta rodar o comando:
+    yarn
+
+05) Instalando o Prettier:
+
+    yarn add prettier eslint-config-prettier eslint-plugin-prettier babel-eslint -D
+
+06) Configurando ESLint:
+
+    Quando rodamos o comando
+    yarn eslint --init,
+    ele gerou um arquivo de configuração chamado:
+    .eslintrc.js
+
+    A seguir iremos fazer algumas configurações extras nesse arquivo:
+
+    --> Dentro da prop extends,
+        iremos acrescentar o prettier e o prettier/react:
+
+        extends: [
+          'plugin:react/recommended',
+          'airbnb',
+          'prettier',
+          'prettier/react'
+        ],
+
+    --> Antes da prop parserOptions,
+        iremos inserir uma prop chamada
+        parser,
+        passando o 'babel-eslint'
+
+        parser: 'babel-eslint',
+
+    --> Dentro da props plugin,
+        iremos inserir o prettier:
+
+        plugins: [
+          'react',
+          'prettier'
+        ],
+
+    --> Agora iremos sobrescrever algumas regras do eslint
+        dentro da prop rules:
+
+        rules: {
+          // estamos pedindo para o prettier apontar todas as regras que ele não encontrar,
+          // ou seja, aquilo que não bater com a forma como estamos escrevendo o código.
+          'prettier/prettier': 'error',
+          // por padrão, o styleguide da airbnb só permite que o código JSX tenha a extensão
+          // de arquivo terminada com .jsx
+          'react/jsx-filename-extension': [
+            'warn',
+            { extensions: ['.jsx', '.js'] }
+          ],
+          // estamos desativando uma regra que obriga a utilizarmos o export default em
+          // arquivos que só tiverem um export.
+          // nos casos de estilização dos componentes nós não utilizaremos o export defaul
+          'import/prefer-default-export': 'off'
+        },
+
+07) Criando arquivo de configuração do Prettier:
+
+    .prettierrc
+
+    Vai ficar na raíz do projeto.
+
+08) Configurando o .prettierrc:
+
+    Criar um objeto:
+
+    {
+
+    }
+
+    Dentro desse objeto vamos inserir as props de configuração:
+
+    {
+      // para utilizarmos aspas simples ao invés de duplas.
+      "singleQuote": true,
+      // vai fazer o eslint e o prettier conversarem/interagirem melhor entre si
+      "trailingComma": "es5"
+    }
