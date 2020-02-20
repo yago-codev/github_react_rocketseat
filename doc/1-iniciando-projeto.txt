@@ -1,0 +1,66 @@
+01) Utilizando CLI para criar o projeto:
+
+    yarn create react-app nome_do_projeto
+
+02) Apagar o arquivo README.md
+
+03) Entendendo os scripts que vem por default no package.json:
+
+    yarn start = vai iniciar o servidor e ficar asssitindo as modificações. 
+    yarn build = vai servir pra quando formos jogar nossa aplicação em produção.
+    yarn test = vai rodar os testes.
+    yarn eject = vai ser útil caso tenhamos que configurar o Webpack e o Babel mais a fundo. 
+
+04) Apagar a propriedade eslintConfig de dentro do arquivo package.json
+
+05) Apagar os comentários do arquivo index.html que fica dentro da pasta public.
+
+06) Ainda dentro do arquivo index.html, iremos apagar o link rel="manifest".
+
+07) Deletar o arquivo manifes.json que fica dentro da pasta public. 
+
+08) Dentro da pasta src, iremos começar a fazer uma higienização, 
+    removendo tudo aquilo que veio por default na instalação automática do React,
+    deixando apenas o que será útil para o projeto que vai ser construído. 
+
+    Arquivos a serem deletados:
+    App.css,
+    App.test,
+    index.css,
+    logo.svg,
+    serviceWorker.js
+
+    Os únicos arquivos da pasta src serão:
+    App.js,
+    index.js
+
+09) Dentro do arquivo index.js, 
+    iremos remover o seguinte trecho de código:
+
+    import './index.css';
+
+    import * as serviceWorker from './serviceWorker';
+
+    // If you want your app to work offline and load faster, you can change
+    // unregister() to register() below. Note this comes with some pitfalls.
+    // Learn more about service workers: https://bit.ly/CRA-PWA
+    serviceWorker.unregister();
+
+    ...
+
+    O que ficará dentro do arquivo index.js é isso:
+
+    import React from 'react';
+    import ReactDOM from 'react-dom';
+    import App from './App';
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+
+10) Dentro do arquivo App.js, 
+    iremos remover:
+
+    import logo from './logo.svg';
+    import './App.css';
+
+11) Ainda no arquivo App.js, 
+    iremos apagar tudo que está sendo exibido dentro da div className="App"
