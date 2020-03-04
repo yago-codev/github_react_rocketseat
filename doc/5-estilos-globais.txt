@@ -1,0 +1,63 @@
+01) Através do styled components também podemos definir estilos globais.
+
+    A seguir criaremos uma pasta chamada styles
+
+    Onde?
+    src/styles
+
+02) Criando arquivo de estilização global:
+
+    Onde?
+    src/styles/global.js
+
+03) Desestruturando o styled-components para termos acesso ao createGlobalStyle:
+
+    import { createGlobalStyles } from 'styled-components';
+
+04) exportando por default o createGlobalStyles:
+
+    A partir disso,
+    todos os estilos declarados dentro do createGlobalStyle
+    serão compartilhados pela aplicação.
+
+    export default createGlobalStyles`
+      * {
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        box-sizing: border-box;
+      }
+    `;
+
+05) Importanto o arquivo de estilização global dentro do componente raíz(app.js):
+
+    import React from 'react';
+
+    import Routes from './routes';
+
+    import GlobalStyles from './styles/global'; <==
+
+    function App() {
+      return <Routes />;
+    }
+
+    export default App;
+
+06) Inserindo o GlobalStyles dentro do componente raíz:
+
+    import React from 'react';
+
+    import Routes from './routes';
+
+    import GlobalStyle from './styles/global'; <==
+
+    function App() {
+      return (
+        <>
+          <Routes />
+          <GlobalStyle /> <==
+        </>
+      );
+    }
+
+    export default App;
