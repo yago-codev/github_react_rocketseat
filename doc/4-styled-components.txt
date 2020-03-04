@@ -1,0 +1,88 @@
+01) Utilizando Styled Components para escrever o CSS dos Componentes:
+
+    yarn add styled-components
+
+02) Vantagens do Styled Components:
+
+    Criamos uma estilização apenas para um Componente.
+
+03) Criando arquivo de estilização para o componente Main:
+
+    Onde?
+    src/Main/styles.js
+
+04) Importando o styled do styled-components no arquivo styles.js:
+
+    import styled from 'styled-components';
+
+    OBS: O VSCode deve estar com o plugin vscode-styled-components instalado.
+
+05) Estilizando o h1 do componente Main:
+
+    Para estilizarmos um determinado elemento,
+    iremos exportar uma constante que irá receber o nome que queremos dar ao elemento estilizado.
+    Como estilizaremos um h1, daremos o nome dele de Title.
+    Essa constante irá evocar o styled,
+    acessando através da notação de ponto a tag JSX que será estilizada.
+
+    import styled from 'styled-components';
+
+    export const Title = styled.h1`
+      font-size: 24px;
+      color: #7159c1;
+      font-family: Arial, Helvetica, sans-serif;
+    `;
+
+06) Importanto o arquivo de estilização dentro do componente estilizado:
+
+    import React from 'react';
+
+    import { Title } from './styles';
+
+    function Main() {
+      return <h1>Main</h1>;
+    }
+
+    export default Main;
+
+07) Agora basta substituir o <h1> pelo nome da importação do arquivo de estilo:
+
+    import React from 'react';
+
+    import { Title } from './styles';
+
+    function Main() {
+      return <Title>Main</Title>; <==
+    }
+
+    export default Main;
+
+08) Acessando props e criando funções dentro do styled components:
+
+    Vamos supor que queremos criar uma estilização para
+    um formulário, e quando houver algum tipo de erro,
+    iremos mudar a cor de uma determinada tag do componente.
+
+    function Main() {
+      return (
+        <Title>
+          Main
+          <small error>main</small>
+        </Title>
+      );
+    }
+
+    Agora poderemos acessar essa prop error dentro do arquivo de estilização:
+
+    import styled from 'styled-components';
+
+    export const Title = styled.h1`
+      font-size: 24px;
+      color: ${props => (props.error ? 'red' : '#7159c1')}; <==
+      font-family: Arial, Helvetica, sans-serif;
+
+      small {
+        font-size: 16px;
+        color: #7159c1;
+      }
+    `;
