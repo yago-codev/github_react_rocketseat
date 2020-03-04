@@ -1,0 +1,191 @@
+01) Trabalhando com Roteamento na construção da SPA:
+
+    A seguir instalaremos a biblioteca responsável por permitir que façamos a
+    navegação entre páginas dentro da nossa SPA, sem que o reload da página aconteça.
+
+    yarn add react-router-dom
+
+02) Criando o arquivo de Roteamento:
+
+    Onde?
+    src/routes.js
+
+03) Criando a pasta onde irão ficar as páginas:
+
+    Onde?
+    src/pages
+
+04) Criando as páginas:
+
+    Cada página ficará dentro de sua respectiva pasta:
+
+    Página principal:
+    src/Main/index.js
+
+    Página de listagem dos repositórios:
+    src/Repository/index.js
+
+05) Criando o componente da página Main:
+
+    import React from 'react';
+
+    function Main() {
+      return <h1>Main</h1>;
+    }
+
+    export default Main;
+
+06) Criando o componente da página de repositório:
+
+    import React from 'react';
+
+    function Repository() {
+      return <h1>Repository</h1>;
+    }
+
+    export default Repository;
+
+07) Ajustando o arquivo de roteamento:
+
+    O react-router-dom exporta vários tipos de roteadores,
+    e o Browser Router permite que façamos uma navegacão entre uma página e outra,
+    utilizando o endereço da rota como '/repository'
+
+    Além do BrowserRouter nós iremos importar o Switch e o Route.
+
+    import React from 'react';
+    import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+08) Criando o componente Routes():
+
+    O retorno desse componente serão nossas rotas:
+
+    export default function Routes() {
+      return (
+
+      );
+    }
+
+09) Importando os componentes de páginas:
+
+    import React from 'react';
+    import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+    import Main from './pages/Main'; <==
+    import Repository from './pages/Repository'; <==
+
+10) Criando rotas para cada um dos componentes de páginas:
+
+    Dentro do retorno do componente de Rotas,
+    precisaremos utilizar o BrowserRouter para envolver todos os
+    outros componentes de páginas que serão roteadas.
+
+    import React from 'react';
+    import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+    import Main from './pages/Main';
+    import Repository from './pages/Repository';
+
+    export default function Routes() {
+      return (
+        <BrowserRouter> <==
+
+        </BrowserRouter> <==
+      );
+    }
+
+11) Inserindo o elemento Switch para fazermos com que somente uma rota seja chamada por vez:
+
+    export default function Routes() {
+      return (
+        <BrowserRouter>
+          <Switch> <==
+
+          </Switch> <==
+        </BrowserRouter>
+      );
+    }
+
+    Porque?
+    Porque o React Router DOM tem o poder de chamar mais de uma rota ao mesmo tempo.
+    Vamos supor que a partir de um mesmo endereço, fossemos exibir mais de um componente em tela,
+    através do React Router DOM nós podemos fazer isso.
+
+    Porém,
+    com o Switch nós faremos com que apenas uma página seja chamada.
+
+12) Declarando as rotas através do Routes:
+
+    Cada Route representará uma página distinta da aplicação:
+
+    export default function Routes() {
+      return (
+        <BrowserRouter>
+          <Switch>
+            <Route path="/repository" component={Repository} />
+          </Switch>
+        </BrowserRouter>
+      );
+    }
+
+    Ou seja,
+    quando o endereço localhost:3000/repository for acessado,
+    iremos renderizar o componente Repository.
+
+13) Chamando a página main através do acesso do endereço raíz:
+
+    OBS: Deveremos declarar um atributo chamado
+    exact
+
+    Esse atributo exact vai fazer com que
+    o endereço da URL tenha que ser exatamente igual ao que foi declarado no path.
+    Caso contrário, quando formos acessar o endereço /repository,
+    nós acabaremos sendo direcionados pro componente Main.
+
+    Mas porque?
+    Porque o react-router-dom irá procurar não por uma igualdade,
+    mas sim pelo "caractere" que foi definido dentro do path,
+    então quando acessarmos o endereço /repository,
+    ele irá ler o "/" e irá entrar automaticamente na rota que tem o "/" declarado,
+    ou seja, a página inicial.
+
+    export default function Routes() {
+      return (
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" exact component={Main} /> <==
+            <Route path="/repository" component={Repository} />
+          </Switch>
+        </BrowserRouter>
+      );
+    }
+
+14) Importando o componente de Roteamento dentro do componente raíz(App.js):
+
+    import React from 'react';
+
+    import Routes from './routes'; <==
+
+    function App() {
+      return (
+        <div className="App">
+          <h1>Hello World</h1>
+        </div>
+      );
+    }
+
+    export default App;
+
+15) Substituindo o retorno do componente raíz pelo componente de Roteamento:
+
+    import React from 'react';
+
+    import Routes from './routes';
+
+    function App() {
+      return <Routes />; <==
+    }
+
+    export default App;
+
+16)
