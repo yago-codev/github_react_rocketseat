@@ -1,0 +1,648 @@
+01) Transformando o componente Main em um componente de Classe para criarmos o estado:
+
+    import React, { Component } from 'react'; <==
+
+    import { FaGithubAlt, FaPlus } from 'react-icons/fa';
+
+    import { Container, Form, SubmitButton } from './styles';
+
+    export default class Main extends Component { <==
+      render() { <==
+        return ( <==
+          <Container>
+            <h1>
+              <FaGithubAlt />
+              Repositórios
+            </h1>
+
+            <Form onSubmit={() => {}}>
+              <input type="text" placeholder="Adicionar repositório" />
+              <SubmitButton>
+                <FaPlus color="#FFF" size={14} />
+              </SubmitButton>
+            </Form>
+          </Container>
+        );
+      }
+    }
+
+02) Criando o estado:
+
+    02.1) Dentro do estado iremos declarar uma propriedade chamada newRepo,
+          que basicamente servirá para armazenarmos os dados do input conforme o usuário for digitando...
+
+          export default class Main extends Component {
+            state = {
+              newRepo: '', <==
+            };
+
+            render() {
+              return (
+                <Container>
+                  <h1>
+                    <FaGithubAlt />
+                    Repositórios
+                  </h1>
+
+                  <Form onSubmit={() => {}}>
+                    <input type="text" placeholder="Adicionar repositório" />
+                    <SubmitButton>
+                      <FaPlus color="#FFF" size={14} />
+                    </SubmitButton>
+                  </Form>
+                </Container>
+              );
+            }
+          }
+
+    02.2) Desestruturando o valor contido no atributo newRepo e atribuindo-o a prop value do input:
+
+          export default class Main extends Component {
+            state = { <==
+              newRepo: '', <==
+            }; <==
+
+            render() {
+              const { newRepo } = this.state; <==
+
+              return (
+                <Container>
+                  <h1>
+                    <FaGithubAlt />
+                    Repositórios
+                  </h1>
+
+                  <Form onSubmit={() => {}}>
+                    <input
+                      type="text"
+                      placeholder="Adicionar repositório"
+                      value={newRepo} <==
+                    />
+                    <SubmitButton>
+                      <FaPlus color="#FFF" size={14} />
+                    </SubmitButton>
+                  </Form>
+                </Container>
+              );
+            }
+          }
+
+    02.3) Criando a prop para disparar o evento de onChange no input, evocando a função que irá capturar o valor digitado no input
+
+          export default class Main extends Component {
+            state = {
+              newRepo: '',
+            };
+
+            render() {
+              const { newRepo } = this.state;
+
+              return (
+                <Container>
+                  <h1>
+                    <FaGithubAlt />
+                    Repositórios
+                  </h1>
+
+                  <Form onSubmit={() => {}}>
+                    <input
+                      type="text"
+                      placeholder="Adicionar repositório"
+                      value={newRepo}
+                      onChange={this.handleInputChange}
+                    />
+                    <SubmitButton>
+                      <FaPlus color="#FFF" size={14} />
+                    </SubmitButton>
+                  </Form>
+                </Container>
+              );
+            }
+          }
+
+    02.4) Criando a função para atualizar o estado com o valor digitado no input:
+
+          export default class Main extends Component {
+            state = {
+              newRepo: '',
+            };
+
+            handleInputChange = e => { <==
+              this.setState({ newRepo: e.target.value }); <==
+            }; <==
+
+            render() {
+              const { newRepo } = this.state;
+
+              return (
+                <Container>
+                  <h1>
+                    <FaGithubAlt />
+                    Repositórios
+                  </h1>
+
+                  <Form onSubmit={() => {}}>
+                    <input
+                      type="text"
+                      placeholder="Adicionar repositório"
+                      value={newRepo}
+                      onChange={this.handleInputChange}
+                    />
+                    <SubmitButton>
+                      <FaPlus color="#FFF" size={14} />
+                    </SubmitButton>
+                  </Form>
+                </Container>
+              );
+            }
+          }
+
+03) Criando a função de submissão do form:
+
+    Testando se o valor está sendo corretamente capturando no input ao
+    dispararmos o submit do form:
+
+    export default class Main extends Component {
+      state = {
+        newRepo: '',
+      };
+
+      // captura o valor digitado no input
+      handleInputChange = e => {
+        this.setState({ newRepo: e.target.value });
+      };
+
+      handleSubmit = e => { <==
+        e.preventDefault(); <==
+
+        console.log(this.state.newRepo); <==
+      }; <==
+
+      render() {
+        const { newRepo } = this.state;
+
+        return (
+          <Container>
+            <h1>
+              <FaGithubAlt />
+              Repositórios
+            </h1>
+
+            <Form onSubmit={this.handleSubmit}>
+              <input
+                type="text"
+                placeholder="Adicionar repositório"
+                value={newRepo}
+                onChange={this.handleInputChange}
+              />
+              <SubmitButton>
+                <FaPlus color="#FFF" size={14} />
+              </SubmitButton>
+            </Form>
+          </Container>
+        );
+      }
+    }
+
+04) Consumindo API do Github com Axios:
+
+    yarn add axios
+
+05) Criando a pasta o arquivo onde iremos organizar o arquivo que fará a chamada a API através da base_url:
+
+    src/services/api.js
+
+06) Importando o axios:
+
+    import axios from 'axios';
+
+07) Criando a chamada a api:
+
+    import axios from 'axios';
+
+    const api = axios.create({
+      baseURL: 'https://api.github.com',
+    });
+
+    export default api;
+
+08) Importando a conexão com a api dentro do arquivo index.js do componete Main:
+
+    import React, { Component } from 'react';
+    import { FaGithubAlt, FaPlus } from 'react-icons/fa';
+    import api from '../../services/api'; <==
+
+    import { Container, Form, SubmitButton } from './styles';
+
+09) Dentro do método handleSubmit do componente Main,
+    iremos transformar essa função em uma função assíncrona:
+
+
+    handleSubmit = async e => { <==
+      e.preventDefault();
+
+      console.log(this.state.newRepo);
+    };
+
+10) Agora iremos capturar os dados da api dentro de uma constante chamada response.
+    Teremos que usar um await antes de capturar os dados, já que estamos fazendo uma requisição a uma API.
+
+    Além disso,
+    o repositório buscado será informado pelo usuário através do preenchimento do input,
+    portanto iremos desestruturar o valor que foi capturado no estado, dentro de newRepo.
+
+    handleSubmit = async e => {
+      e.preventDefault();
+
+      const { newRepo } = this.state; <==
+
+      const response = await api.get(`/repos/${newRepo}`); <==
+    };
+
+11) Testando a chamada a API pra ver se tudo está funcionando direitinho:
+
+    handleSubmit = async e => {
+      e.preventDefault();
+
+      const { newRepo } = this.state;
+
+      const response = await api.get(`/repos/${newRepo}`);
+
+      console.log(response.data);
+    };
+
+12) Desestruturando as infos vindas do repositório:
+
+    handleSubmit = async e => {
+      e.preventDefault();
+
+      const { newRepo } = this.state;
+
+      const response = await api.get(`/repos/${newRepo}`);
+
+      const data = { <==
+        name: response.data.full_name, <==
+      }; <==
+    };
+
+13) Criando novo atributo no estado para armazenar os dados vindos da chamada a API:
+
+    state = {
+      newRepo: '',
+      repositories: [], <==
+    };
+
+14) Armazenando os dados vindos da API dentro do atributo contido no estado (repositories):
+
+    handleSubmit = async e => {
+      e.preventDefault();
+
+      const { newRepo, repositories } = this.state; <==
+
+      const response = await api.get(`/repos/${newRepo}`);
+
+      const data = {
+        name: response.data.full_name,
+      };
+
+      this.setState({ <==
+        repositories: [...repositories, data], <==
+      }); <==
+    };
+
+15) Retornando o valor contido no atributo do estado newRepo para que o input não fique "sujo" com o valor anterior:
+
+    export default class Main extends Component {
+      state = {
+        newRepo: '',
+        repositories: [],
+      };
+
+      // captura o valor digitado no input
+      handleInputChange = e => {
+        this.setState({ newRepo: e.target.value });
+      };
+
+      handleSubmit = async e => {
+        e.preventDefault();
+
+        const { newRepo, repositories } = this.state;
+
+        const response = await api.get(`/repos/${newRepo}`);
+
+        const data = {
+          name: response.data.full_name,
+        };
+
+        this.setState({
+          repositories: [...repositories, data],
+          newRepo: '', <==
+        });
+      };
+
+16) Como testar se os repositórios estão sendo armazenados corretamente no estado?
+
+    Podemos fazer isso através do próprio Browser, com o React Developer Tools.
+
+    Basta selecionar o componente que está manipulando o estado,
+    então logo ao lado aparecerão os atributos do estado, respondendo dinamicamente/reativamente as interações.
+
+17) Desabilitando o button enquanto o repositório está sendo buscado na API:
+
+    17.1) Criando um novo atributo dentro do estado:
+
+          state = {
+            newRepo: '',
+            repositories: [],
+            loading: false,
+          };
+
+    17.2) Assim que dispararmos o formulário, evocaremos a função que irá fazer a chamada a API.
+          Logo após o preventDefault(), iremos setar o estado do atributo loading para true:
+
+          handleSubmit = async e => {
+            e.preventDefault();
+
+            this.setState({ loading: true }); <==
+
+            const { newRepo, repositories } = this.state;
+
+            const response = await api.get(`/repos/${newRepo}`);
+
+            const data = {
+              name: response.data.full_name,
+            };
+
+            this.setState({
+              repositories: [...repositories, data],
+              newRepo: '',
+            });
+          };
+
+
+    17.3) Agora iremos setar o estado do atributo loading para false logo no final da função,
+          ou seja, assim como setamos o value do input para retornar ao estado vazio,
+          também iremos setar o estado de loading para false, fazendo com que o botão fique
+          novamente disponível para que o usuário realize novos submits no input.
+
+          handleSubmit = async e => {
+            e.preventDefault();
+
+            this.setState({ loading: true });
+
+            const { newRepo, repositories } = this.state;
+
+            const response = await api.get(`/repos/${newRepo}`);
+
+            const data = {
+              name: response.data.full_name,
+            };
+
+            this.setState({
+              repositories: [...repositories, data],
+              newRepo: '',
+              loading: false, <==
+            });
+          };
+
+    17.4) Criando o atributo no button que será usado para modificar seu estilo.
+          Dentro do atributo nós iremos setar o atributo loading que foi definido no estado.
+
+          Em resumo,
+          assim que dispararmos o envio para api clicando no botão,
+          o atributo do estado será modificado para true, alterando a visibilidade do botão.
+          Assim que a resposta da request for recebida, o estado do atributo volta ao normal,
+          fazendo com que o botão também retorne ao que era.
+
+          export default class Main extends Component {
+            state = {
+              newRepo: '',
+              repositories: [],
+              loading: false,
+            };
+
+            // captura o valor digitado no input
+            handleInputChange = e => {
+              this.setState({ newRepo: e.target.value });
+            };
+
+            handleSubmit = async e => {
+              e.preventDefault();
+
+              this.setState({ loading: true });
+
+              const { newRepo, repositories } = this.state;
+
+              const response = await api.get(`/repos/${newRepo}`);
+
+              const data = {
+                name: response.data.full_name,
+              };
+
+              this.setState({
+                repositories: [...repositories, data],
+                newRepo: '',
+                loading: false,
+              });
+            };
+
+            render() {
+              const { newRepo, loading } = this.state; <==
+
+              return (
+                <Container>
+                  <h1>
+                    <FaGithubAlt />
+                    Repositórios
+                  </h1>
+
+                  <Form onSubmit={this.handleSubmit}>
+                    <input
+                      type="text"
+                      placeholder="Adicionar repositório"
+                      value={newRepo}
+                      onChange={this.handleInputChange}
+                    />
+                    <SubmitButton loading={loading}> <==
+                      <FaPlus color="#FFF" size={14} />
+                    </SubmitButton>
+                  </Form>
+                </Container>
+              );
+            }
+          }
+
+    17.5) Modificando o estilo de acordo com o estado do atributo definido na prop loading:
+
+          Para fazermos isso,
+          iremos acessar as props do button através dos atributos:
+
+          O atributo disabled só estará ativo no botão a
+          partir do momento em que a prop loading for true,
+          e ela só será true no momento da requisição a API:
+
+          export const SubmitButton = styled.button.attrs(props => ({
+            type: 'submit',
+            disabled: props.loading, <==
+          }))`
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #131419;
+            margin-left: 15px;
+            border-radius: 50%;
+            border: none;
+            box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.1),
+              2px 2px 6px rgba(0, 0, 0, 0.8);
+
+            &[disabled] { <==
+              cursor: not-allowed; <==
+              opacity: 0.6; <==
+            } <==
+
+    17.6) Colocando um "loader" no button quando a chamada a API for feita:
+
+          Importando o ícone:
+
+          import React, { Component } from 'react';
+          import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa'; <==
+          import api from '../../services/api';
+
+          import { Container, Form, SubmitButton } from './styles';
+
+    17.7) Agora iremos criar uma renderização condicional.
+          Quando a chamda a API for feita,
+          ao invés de exibirmos o icóne de +,
+          iremos exibir o spinner.
+
+          render() {
+            const { newRepo, loading } = this.state;
+
+            return (
+              <Container>
+                <h1>
+                  <FaGithubAlt />
+                  Repositórios
+                </h1>
+
+                <Form onSubmit={this.handleSubmit}>
+                  <input
+                    type="text"
+                    placeholder="Adicionar repositório"
+                    value={newRepo}
+                    onChange={this.handleInputChange}
+                  />
+                  <SubmitButton loading={loading}>
+                    { loading ? <FaSpinner size={14} /> : <FaPlus size={14} /> } <==
+                  </SubmitButton>
+                </Form>
+              </Container>
+            );
+          }
+
+    17.8) Adicionando o keyframes e o css do estyled components para criarmos a animação do spinner:
+
+          import styled, { keyframes, css } from 'styled-components';
+
+    17.9) Antes do componente estilizado SubmitButton,
+          iremos declarar uma constante chamada rotate,
+          onde utilizaremos o keyframes para criar a animação de rotação:
+
+          const rotate = keyframes` <==
+            from { <==
+              transform: rotate(0deg); <==
+            } <==
+
+            to { <==
+              transform: rotate(360deg); <==
+            } <==
+          `; <==
+
+          export const SubmitButton = styled.button.attrs(props => ({
+            type: 'submit',
+            disabled: props.loading,
+          }))`
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #131419;
+            margin-left: 15px;
+            border-radius: 50%;
+            border: none;
+            box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.1),
+              2px 2px 6px rgba(0, 0, 0, 0.8);
+
+            &[disabled] {
+              cursor: not-allowed;
+              opacity: 0.6;
+            }
+
+            svg {
+              margin-right: 0;
+              fill: #c7c7c7;
+            }
+
+            :active {
+              box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.1),
+                inset 2px 2px 6px rgba(0, 0, 0, 0.8);
+
+              svg {
+                fill: #006c9c;
+                margin-right: 0;
+              }
+            }
+          `;
+
+    17.10)  Criando uma função de estilização para
+            setar a animação vinda da const rotate quando a prop do estado(loading) for igual a true.
+
+            Dentro dessa função teremos que usar o css do styled components:
+
+            export const SubmitButton = styled.button.attrs(props => ({
+              type: 'submit',
+              disabled: props.loading,
+            }))`
+              width: 50px;
+              height: 50px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: #131419;
+              margin-left: 15px;
+              border-radius: 50%;
+              border: none;
+              box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.1),
+                2px 2px 6px rgba(0, 0, 0, 0.8);
+
+              &[disabled] {
+                cursor: not-allowed;
+                opacity: 0.6;
+              }
+
+              svg {
+                margin-right: 0;
+                fill: #c7c7c7;
+              }
+
+              &:active {
+                box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.1),
+                  inset 2px 2px 6px rgba(0, 0, 0, 0.8);
+
+                svg {
+                  fill: #006c9c;
+                  margin-right: 0;
+                }
+              }
+
+              ${props => <==
+                props.loading && <==
+                css` <==
+                  svg { <==
+                    animation: ${rotate} 2s linear infinite; <==
+                  } <==
+                `} <==
+            `;
