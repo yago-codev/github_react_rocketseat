@@ -1,0 +1,365 @@
+01) Dentro do componente da página Main,
+    iremos retornar um componente estilizado chamado Container.
+
+    Por enquanto esse componente ainda não existe,
+    portanto iremos criar-lo a posteriormente:
+
+    import React from 'react';
+
+    import { Container } from './styles'; <==
+
+    function Main() {
+      return (
+        <Container> <==
+
+        </Container> <==
+      );
+    }
+
+    export default Main;
+
+02) Continuando a estrutura JSX do componente...
+
+    Dentro do container,
+    iremos trabalhar com ícones.
+    Para lidarmos com isso,
+    instalaremos uma biblioteca de ícones do próprio react:
+
+    yarn add react-icons
+
+    Essa lib tratá consigo os pacotes de ícones mais famosos:
+    material icons, font awasome...
+
+03) Como usar a lib de ícones?
+
+    import {nomeIcone} from 'react-icons/nomePacote';
+
+    ...
+
+    Aqui nós usaremos:
+
+    import React from 'react';
+
+    import { FaGithubAlt } from 'react-icons/fa'; <==  "fa" significa font awasome.
+
+    import { Container } from './styles';
+
+    function Main() {
+      return <Container />;
+    }
+
+    export default Main;
+
+04) Importando o ícone dentro do componente:
+
+    import React from 'react';
+
+    import { FaGithubAlt } from 'react-icons/fa';
+
+    import { Container } from './styles';
+
+    function Main() {
+      return (
+        <Container>
+          <h1>
+            <FaGithubAlt /> <==
+            Repositórios
+          </h1>
+        </Container>
+      );
+    }
+
+    export default Main;
+
+05) Criando o form onde o usuário irá cadastrar novos repositórios:
+
+    Esse Form será um novo componente estilizado,
+    ou seja, não utilizaremos o encadeamento para estilizar-lo.
+
+    Quando devemos criar um componente de estilização?
+    Quando o encadeamento de estilização for ultrapassar 2 níveis de componentes filhos.
+
+    import React from 'react';
+
+    import { FaGithubAlt } from 'react-icons/fa';
+
+    import { Container, Form } from './styles';
+
+    function Main() {
+      return (
+        <Container>
+          <h1>
+            <FaGithubAlt />
+            Repositórios
+          </h1>
+
+          <Form onSubmit={() => {}}> <==
+            <input  <==
+              type="text" <==
+              placeholder="Adicionar repositório" <==
+            /> <==
+          </Form> <==
+        </Container>
+      );
+    }
+
+    export default Main;
+
+06) Criando o botão de submit do form. Ele também será um componente estilizado:
+
+    Porque?
+    Porque iremos alterar sua estilização de acordo com o valor de algumas propriedades.
+    Por exemplo,
+    quando o usuário clicar no botão para adicionar o repositório,
+    enquanto a requisição estiver sendo feita não iremos permitir que o usuário
+    clique novamente no botão, então deixaremos ele "apagado" para que
+    o usuário não perceba que esse botão é clicável.
+
+    Portanto iremos criar uma propriedade dentro desse botão chamada
+    disabled.
+
+    Em resumo,
+    sempre que quisermos alterar o estilo de um componente baseado em alguma propriedade,
+    teremos que criar um componente de estilo.
+
+    import React from 'react';
+
+    import { FaGithubAlt } from 'react-icons/fa';
+
+    import { Container, Form } from './styles';
+
+    function Main() {
+      return (
+        <Container>
+          <h1>
+            <FaGithubAlt />
+            Repositórios
+          </h1>
+
+          <Form onSubmit={() => {}}>
+            <input
+              type="text"
+              placeholder="Adicionar repositório"
+            />
+            <SubmitButton disabled> <==
+
+            </SubmitButton> <==
+          </Form>
+        </Container>
+      );
+    }
+
+    export default Main;
+
+07) Desestruturando o react-icons para pegar outro ícone:
+
+    import React from 'react';
+
+    import { FaGithubAlt, FaPlus } from 'react-icons/fa'; <==
+
+    import { Container, Form } from './styles';
+
+    function Main() {
+      return (
+        <Container>
+          <h1>
+            <FaGithubAlt />
+            Repositórios
+          </h1>
+
+          <Form onSubmit={() => {}}>
+            <input
+              type="text"
+              placeholder="Adicionar repositório"
+            />
+            <SubmitButton disabled>
+
+            </SubmitButton>
+          </Form>
+        </Container>
+      );
+    }
+
+    export default Main;
+
+08) Inserindo o ícone dentro do botão:
+
+    import React from 'react';
+
+    import { FaGithubAlt, FaPlus } from 'react-icons/fa';
+
+    import { Container, Form } from './styles';
+
+    function Main() {
+      return (
+        <Container>
+          <h1>
+            <FaGithubAlt />
+            Repositórios
+          </h1>
+
+          <Form onSubmit={() => {}}>
+            <input
+              type="text"
+              placeholder="cAdicionar repositório"
+            />
+            <SubmitButton disabled>
+              <FaPlus /> <==
+            </SubmitButton>
+          </Form>
+        </Container>
+      );
+    }
+
+    export default Main;
+
+09) Incluindo o SubmitButton dentro da desestruturação do arquivo de estilização:
+
+    import React from 'react';
+
+    import { FaGithubAlt, FaPlus } from 'react-icons/fa';
+
+    import { Container, Form, SubmitButton } from './styles'; <==
+
+    function Main() {
+      return (
+        <Container>
+          <h1>
+            <FaGithubAlt />
+            Repositórios
+          </h1>
+
+          <Form onSubmit={() => {}}>
+            <input type="text" placeholder="cAdicionar repositório" />
+            <SubmitButton disabled>
+              <FaPlus color="#FFF" size={14} />
+            </SubmitButton>
+          </Form>
+        </Container>
+      );
+    }
+
+    export default Main;
+
+10) Criando os componentes de estilo dentro do arquivo de estilização do componente Main (styles.js)
+
+    import styled from 'styled-components';
+
+    export const Container = styled.div`
+
+    `;
+
+    export const Form = styled.form`
+
+    `;
+
+    export const SubmitButton = styled.button`
+
+    `;
+
+11) Estilização dos componentes de estilo finalizada:
+
+    import styled from 'styled-components';
+
+    export const Container = styled.div`
+      max-width: 700px;
+      background: #131419;
+      border-radius: 4px;
+      box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05),
+        5px 5px 15px rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      margin: 80px auto;
+
+      h1 {
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+      }
+
+      svg {
+        margin-right: 10px;
+      }
+    `;
+
+    export const Form = styled.form`
+      margin-top: 30px;
+      display: flex;
+      flex-direction: row;
+
+      input {
+        flex: 1;
+        height: 50px;
+        background: #131419;
+        border: none;
+        outline: none;
+        border-radius: 40px;
+        padding: 5px 15px;
+        color: #03a9f4;
+        font-size: 18px;
+        box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.1),
+          inset 2px 2px 6px rgba(0, 0, 0, 0.8);
+      }
+    `;
+
+    export const SubmitButton = styled.button.attrs({
+      type: 'submit',
+    })`
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #131419;
+      margin-left: 15px;
+      border-radius: 50%;
+      border: none;
+      box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.1),
+        2px 2px 6px rgba(0, 0, 0, 0.8);
+
+      svg {
+        margin-right: 0;
+      }
+
+      :active {
+        box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.1),
+          inset 2px 2px 6px rgba(0, 0, 0, 0.8);
+
+        svg {
+          fill: #006c9c;
+          margin-right: 0;
+        }
+      }
+    `;
+
+12) Definindo o type="submit" do button através do styled-components:
+
+    export const SubmitButton = styled.button.attrs({ <==
+      type: 'submit', <==
+    })`
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #131419;
+      margin-left: 15px;
+      border-radius: 50%;
+      border: none;
+      box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.1),
+        2px 2px 6px rgba(0, 0, 0, 0.8);
+
+      svg {
+        margin-right: 0;
+      }
+
+      :active {
+        box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.1),
+          inset 2px 2px 6px rgba(0, 0, 0, 0.8);
+
+        svg {
+          fill: #006c9c;
+          margin-right: 0;
+        }
+      }
+    `;
